@@ -1,0 +1,25 @@
+:root{
+    --bg-color-header: black;
+    --text-color: white;
+    --header-height: 66px;
+}
+
+body {
+    margin: 0px;
+}
+
+.header{
+    position: absolute;
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--bg-color-header);
+    color:var(--text-color);
+    padding: 0.5rem 1rem;
+}
+
+#content{
+    position: absolute;
+    width: 100%;
+    height: calc(100% - var(--header-height));
+    margin-top: var(--header-height);
+}
