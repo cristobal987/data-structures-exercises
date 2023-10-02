@@ -36,7 +36,9 @@ class Queue {
         if(this.first == null){
             this.last = null
         }
-        this.length--
+        if(this.length > 0){
+            this.length--
+        }
         return node
     }
 
