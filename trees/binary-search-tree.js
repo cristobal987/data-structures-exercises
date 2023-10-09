@@ -137,6 +137,7 @@ class BinarySearchTree {
         }
         console.log("Tree height: " + (this.height))
         console.log(str)
+        return str
     }
 
     BreathFirstSearch = function() {
@@ -205,32 +206,154 @@ function traversePostOrder(node, list){
     return list
 }
 
-/*const bst = new BinarySearchTree(15)
-bst.insert(21)
-bst.insert(10)
-bst.insert(5)
-bst.insert(12)
-bst.insert(30)
-bst.insert(35)
-bst.insert(28)
-bst.insert(11)
-bst.insert(13)
-bst.insert(4)
-bst.insert(6)
-bst.insert(17)
-bst.insert(18)
-bst.insert(16)
+function print(str){
+    str = str.replace(/[\n]/g, '<br/>')
+    str = str.replace(/[ \t]/g, '&nbsp;')
+    let content = document.getElementById('content')
+    content.innerHTML += str + '<br/>'
+}
 
-bst.printTree()*/
-const bst = new BinarySearchTree(9)
-bst.insert(4)
-bst.insert(20)
-bst.insert(1)
-bst.insert(6)
-bst.insert(15)
-bst.insert(170)
+///
+const bst2 = new BinarySearchTree(9)
+bst2.insert(4)
+bst2.insert(20)
+bst2.insert(1)
+bst2.insert(6)
+bst2.insert(15)
+bst2.insert(170)
 
-console.log(bst.BreathFirstSearch().toString())
-console.log(bst.DFSInorder().toString())
-console.log(bst.DFSPreorder().toString())
-console.log(bst.DFSPostorder().toString())
+const printedTree = bst2.printTree()
+
+console.log("BFS:" + bst2.BreathFirstSearch().toString())
+console.log("DFS(inorder):" + bst2.DFSInorder().toString())
+console.log("DFS(preorder):" + bst2.DFSPreorder().toString())
+console.log("DFS(postorder):" + bst2.DFSPostorder().toString())
+
+const outputString = `
+class NodeTree {
+    constructor(value){
+        this.value = value
+        this.left = null
+        this.right = null
+    }
+}
+
+class BinarySearchTree {
+    constructor(value){
+        this.root = new NodeTree(value)
+        this.height = 1
+    }
+
+    insert = function(value){
+        let node = null
+        let count = 0
+        let queue = new Queue()
+        queue.enqueue(this.root)
+        while(queue.length > 0){
+            node = queue.dequeue().value
+            if(node.value > value){
+                if (node.left == null) {
+                    node.left = new NodeTree(value);
+                    node.left.level = count + 1
+                    break;
+                }else {
+                    queue.enqueue(node.left)
+                }
+            }else{
+                if (node.right == null) {
+                    node.right = new NodeTree(value);
+                    node.right.level = count + 1
+                    break;
+                }else {
+                    queue.enqueue(node.right)
+                }
+            }
+            count++
+        }
+        this.height = count + 1
+    }    
+
+    BreathFirstSearch = function() {
+        let currentNode = this.root
+        let list = []
+        let queue = new Queue()
+        queue.enqueue(currentNode)
+
+        while(queue.length > 0){
+            currentNode = queue.dequeue().value
+            list.push(currentNode.value)
+            if(currentNode.left){
+                queue.enqueue(currentNode.left)
+            }
+            if(currentNode.right){
+                queue.enqueue(currentNode.right)
+            }
+        }
+        return list
+    }
+
+    DFSInorder = function(){
+        return traverseInOrder(this.root, [])
+    }
+
+    DFSPreorder = function(){
+        return traversePreOrder(this.root, [])
+    }
+
+    DFSPostorder = function(){
+        return traversePostOrder(this.root, [])
+    }
+
+}
+
+function traverseInOrder(node, list){
+    if(node.left){
+        traverseInOrder(node.left, list)
+    }
+    list.push(node.value)
+    if(node.right){
+        traverseInOrder(node.right, list)
+    }
+    return list
+}
+
+function traversePreOrder(node, list){
+    list.push(node.value)
+    if(node.left){
+        traversePreOrder(node.left, list)
+    }
+    if(node.right){
+        traversePreOrder(node.right, list)
+    }
+    return list
+}
+
+function traversePostOrder(node, list){
+    if(node.left){
+        traversePostOrder(node.left, list)
+    }
+    if(node.right){
+        traversePostOrder(node.right, list)
+    }
+    list.push(node.value)
+    return list
+}
+
+const bst2 = new BinarySearchTree(9)
+bst2.insert(4)
+bst2.insert(20)
+bst2.insert(1)
+bst2.insert(6)
+bst2.insert(15)
+bst2.insert(170)
+
+` +printedTree+ `
+
+BFS:`+bst2.BreathFirstSearch().toString()+`
+DFS(inorder):`+bst2.DFSInorder().toString()+`
+DFS(preorder):`+bst2.DFSPreorder().toString()+`
+DFS(postorder):`+bst2.DFSPostorder().toString()+`
+
+`;
+
+print(outputString);
